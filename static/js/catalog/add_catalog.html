@@ -1,0 +1,50 @@
+<div class="col-sm-12">
+<h3 style="margin:0px 0px 30px;">
+	<span data-ng-if="catalog.id">Edit Product Data</span><span data-ng-if="!catalog.id">Add Product to Catalog</span>
+	<a ui-sref="catalog" class="btn btn-primary pull-right">Catalog</a>
+</h3>
+<form class="form-horizontal" role="form" method="post" ng-submit="saveCatalog(catalog)">
+		<input type="hidden" name="id" data-ng-if="catalog.id" value="[[ catalog.id ]]">
+	    <div class="col-sm-5">
+			<div class="form-group" ng-hide="catalog.id">
+			   <label for="category">Category</label>
+			   <select name="category" class="form-control" data-ng-model="category">
+				   <option ng-repeat="cat in categories" value='[[ cat.name ]]' ng-selected="catalog.product.category_id==cat.id">[[ cat.name ]]</option>
+			   </select>
+			</div>
+			<div class="form-group" ng-hide="catalog.id">
+			   <label for="subcategory">SubCategory</label>
+			   <select name="subcategory" class="form-control" required data-ng-model="subcategory">
+				   <option ng-repeat="subcat in subcategories|filter:category" value='[[ subcat.name ]]' ng-selected="catalog.product.subcategory==subcat.id">[[ subcat.name ]]</option>
+			   </select>
+			</div>
+  	        <div class="form-group required">
+				<label for="title">Product</label>
+			   <select name="product" class="form-control" required data-ng-model="catalog.product" ng-disabled="catalog.id">
+				   <option ng-repeat="product in products|filter:category|filter:subcategory" value='[[ product.id ]]' ng-selected="catalog.product==product.id">[[ product.title ]]</option>
+			   </select>
+  	        </div>
+			<div class="form-group required">
+			   <label for="price">Price</label>
+			   <input name="price" class="form-control" data-ng-model="catalog.price" type="number" required>
+			</div>
+			<div class="form-group required">
+ 			   <label for="available_count">No of Items Available</label>
+ 			   <input name="available_count" class="form-control" data-ng-model="catalog.available_count" type="number" required>
+			</div>
+	    </div>
+       <div  style="clear:both;">
+          <input type="submit" class="btn btn-primary" value="Save">	
+          <a class="btn btn-default" ui-sref="catalog">Cancel</a>
+       </div>
+</form>	
+<style>
+.form-control{
+	height:35px;
+	width:auto;
+	max-width:500px;
+}
+.border-left{
+	padding-left:50px;
+}
+</style>

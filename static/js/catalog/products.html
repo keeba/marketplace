@@ -1,0 +1,49 @@
+<div class="col-sm-12">
+	<form class="form-inline" style="margin-bottom:15px;">
+	        <label>Filter By:</label>
+	        <select data-ng-model="category" class="form-control width-auto" data-ng-change="subcategory='';">
+	                <option value="" selected></option>
+	                <option ng-repeat="category in categories" value="[[ category.name ]]">[[ category.name ]]</option>
+	        </select>
+	        <select data-ng-model="subcategory" class="form-control width-auto">
+	                <option value="" selected></option>
+	                <option ng-repeat="subcategory in subcategories|filter:category" value="[[ subcategory.name ]]">[[ subcategory.name ]]</option>
+	        </select>
+			<div style="display:inline-block;" class="pull-right" ng-if="authuser.is_seller">	
+				<a ui-sref="newproduct" class="btn btn-success"><i class="fa fa-plus"></i> Add New Product</a>
+			</div>
+	</form>
+	<table class="table table-striped table-bordered">
+		<thead>
+			<th>Product Id</th>
+			<th>Title</th>
+			<th>Price</th>
+			<th>Category</th>
+			<th>Is Available?</th>
+			<th ng-if="authuser.is_superuser || authuser.is_seller">Actions</th>
+		</thead>
+		<tbody>
+			<tr ng-repeat="product in products|filter:category|filter:subcategory">
+				<td>[[ product.id ]]</td>
+				<td><a ui-sref="viewproduct({productId:product.id})">[[ product.title ]]</a></td>
+				<td>[[ product.price ]]</td>
+				<td>[[ product.category ]]</td>				
+				<td>[[ product.is_available ]]</td>
+				<td ng-if="authuser.is_superuser || authuser.is_seller">
+					<div style="display:inline-flex;">
+						<a ui-sref="editproduct({productId:product.id})" ng-if="authuser.is_superuser || product.user==authuser.id">
+							<i class="fa fa-pencil"></i>
+						</a>            
+						<a ng-click="deleteProduct(product)" style="margin-left:5px;" ng-if="authuser.is_superuser || ( product.can_delete && product.user==authuser.id)">
+							<i class="fa fa-remove"></i>
+						</a> 
+					</div>
+				</td>						
+			</tr>
+		</tbody>
+	</table>
+</div>
+<script>
+$('.products-tab').addClass('active');
+$('.catalog-tab').removeClass('active');
+</script>

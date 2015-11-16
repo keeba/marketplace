@@ -1,0 +1,46 @@
+<div class="col-sm-12">
+<h3 style="margin:0px 0px 30px;">
+	<span data-ng-if="product.id">Edit</span><span data-ng-if="!product.id">Add</span> Product
+	<a ui-sref="products" class="btn btn-primary pull-right">List Products</a>
+</h3>
+<form class="form-horizontal" role="form" method="post" ng-submit="saveProduct(product)">
+		<input type="hidden" name="id" data-ng-if="product.id" value="[[ product.id ]]">
+	    <div class="col-sm-5">
+  	        <div class="form-group required">
+				<label for="title">Product Title</label>
+				<textarea name="title" class="form-control ta-width" rows="2" required data-ng-model="product.title" maxlength="1000"></textarea>
+  	        </div>
+			<div class="form-group required">
+				<label for="description">Product Description</label>
+				<textarea name="description" class="form-control ta-width" rows="4" required data-ng-model="product.description" maxlength="10000"></textarea>
+			</div>
+			<div class="form-group">
+			   <label for="category">Category</label>
+			   <select name="category" class="form-control" data-ng-model="category">
+				   <option ng-repeat="category in categories" value='[[ category.name ]]' ng-selected="product.category_id==category.id">[[ category.name ]]</option>
+			   </select>
+			</div>
+			<div class="form-group required">
+			   <label for="subcategory">SubCategory</label>
+			   <select name="subcategory" class="form-control" required data-ng-model="product.subcategory">
+				   <option ng-repeat="subcategory in subcategories|filter:category" value='[[ subcategory.id ]]' ng-selected="product.subcategory==subcategory.id">[[ subcategory.name ]]</option>
+			   </select>
+			</div>
+	    </div>
+       <div  style="clear:both;">
+          <input type="submit" class="btn btn-primary" value="Save">	
+          <a class="btn btn-default" ui-sref="products">Cancel</a>
+       </div>
+</form>	
+<style>
+.form-control{
+	height:35px;
+	width:auto;
+}
+.border-left{
+	padding-left:50px;
+}
+.ta-width{
+	width:100% !important;
+}
+</style>

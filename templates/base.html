@@ -1,0 +1,42 @@
+{% load staticfiles %}
+<html {% if request.user.is_authenticated or is_home_page %}data-ng-app="catalogApp"{% endif %}>
+  <head>
+ 	<link href="{% static "css/bootstrap.min.css" %}" rel="stylesheet">
+	<link href="{% static "css/signin.css" %}" rel="stylesheet">	
+	<link href="{% static "css/font-awesome.min.css" %}" rel="stylesheet">	
+	<title>Market Place</title>
+  </head>
+  <body>
+	  {% include "navigation.html" %}	
+	  {% if request.user.is_authenticated or is_home_page %}
+		 <div ui-view>
+		 </div>
+	  {% else %}
+	  	<div class="container-fluid" id="main">
+		  {% block main %}{% endblock %}
+	  	</div>
+	  {% endif %}
+	  <script src="{% static "js/jquery.min.js" %}"></script>
+	  <script src="{% static "js/bootstrap.min.js" %}"></script>
+	  {% if request.user.is_authenticated or is_home_page %}		
+	    <script src="{% static "js/angular.min.js" %}"></script>
+		<script src="{% static "js/angular-resource.min.js" %}"></script>
+		<script src="{% static "js/angular-route.min.js" %}"></script>
+		<script src="{% static "js/angular-ui-router.min.js" %}"></script>
+	  	<script src="{% static "js/catalog/catalogServices.js" %}"></script>	 	  
+		<script src="{% static "js/catalog/catalogController.js" %}"></script>	 	  	  
+		<script src="{% static "js/catalog/catalogApp.js" %}"></script>	 
+	  	<script type="text/javascript"> 
+	    // This allows you to access the current user id in your angular controllers.
+			var authUser = function() {
+				  return {
+					id: "{{ request.user.id|default:''}}",
+					is_superuser : "{{ request.user.is_superuser|default:'' }}",  
+					is_seller : "{{ request.user.profile.is_seller|default:''}}"  
+	        	  }
+			};
+			angular.module('catalogApp.services').factory('AuthUser',authUser); 
+	    </script> 
+	  {% endif %}
+  </body>
+</html>

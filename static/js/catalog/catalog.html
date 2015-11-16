@@ -1,0 +1,50 @@
+<div class="col-sm-12">
+	<form class="form-inline" style="margin-bottom:15px;">
+	        <label>Filter By:</label>
+	        <select data-ng-model="category" class="form-control width-auto" data-ng-change="subcategory='';">
+	                <option value="" selected></option>
+	                <option ng-repeat="category in categories" value="[[ category.name ]]">[[ category.name ]]</option>
+	        </select>
+	        <select data-ng-model="subcategory" class="form-control width-auto">
+	                <option value="" selected></option>
+	                <option ng-repeat="subcategory in subcategories|filter:category" value="[[ subcategory.name ]]">[[ subcategory.name ]]</option>
+	        </select>
+			<div style="display:inline-block;" class="pull-right">
+				<a ui-sref="newcatalog" class="btn btn-success"><i class="fa fa-plus"></i> Add Products to Catalog</a>
+			</div>
+	</form>
+
+	<table class="table table-striped table-bordered">
+		<thead>
+			<th>Catalog Id</th>
+			<th>Title</th>
+			<th>Price</th>
+			<th>Category</th>
+			<th>No of Items Available</th>
+			<th>Actions</th>			
+		</thead>
+		<tbody>
+			<tr ng-repeat="catalog in catalogs|filter:category|filter:subcategory">
+				<td>[[ catalog.id ]]</td>
+				<td>[[ catalog.product_title ]]</td>
+				<td>[[ catalog.price ]]</td>
+				<td>[[ catalog.product_category ]]</td>				
+				<td>[[ catalog.available_count ]]</td>
+				<td>
+					<div style="display:inline-flex;">
+						<a ui-sref="editcatalog({catalogId:catalog.id})">
+							<i class="fa fa-pencil"></i>
+						</a>            
+						<a ng-click="deleteCatalog(catalog)" style="margin-left:5px;">
+							<i class="fa fa-remove"></i>
+						</a> 
+					</div>
+				</td>								
+			</tr>
+		</tbody>
+	</table>
+</div>
+<script>
+$('.products-tab').removeClass('active');
+$('.catalog-tab').addClass('active');
+</script>
