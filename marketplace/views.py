@@ -41,9 +41,13 @@ def register(request):
                             "last_name":request.POST['last_name'],
                             "email":request.POST['email'], 
                           }
-            profile_params = { "is_seller" : request.POST.get('is_seller') or 0}                      
+            is_seller = 0
+            if request.POST.get('is_seller'):
+                is_seller = 1            
             User.objects.filter(pk=new_user.id).update(**user_params)
-            UserProfile.objects.filter(user=request.user).update(**profile_params)
+            profile_obj,created = UserProfile.objects.get_or_create(user_id=new_user.id)                           
+            profile_obj.is_seller = is_seller
+            profile_obj.save()
             username = request.POST['username']
             password = request.POST['password1']              
             user = authenticate(username=username,password=password)
